@@ -1,0 +1,149 @@
+.TH xplot 1 "25 May 2002" "Plotting Tools" "Plotting Tools"
+.SH NAME
+xplot - fast X-windows tool to graph and visualize lots of data
+.SH SYNOPSIS
+.B xplot [options] file [files]
+.SH DESCRIPTION
+xplot
+is a fast visualization tool for examining multiple data sets in
+parallel plots. It supports easy zoom-in and zoom-out capabilities, and
+synchronized views into multiple data sets (with the -x , -y and -tile options).
+
+.SH OPTIONS
+.TP 5
+.B \-x
+causes several graphs to be synchronized on the X-axis (zooming in one
+window zooms all the others, with the same portion of the X-axis on
+display).  The Y-axis of the other graphs will be autoscaled to fit the data.
+.TP 5
+.B \-y
+causes several graphs to be synchronized on the Y-axis (zooming in one
+window zooms all the others, with the same portion of the Y-axis on
+display).
+.TP 5
+.B \-tile
+allows one to look at multiple data sets in parallel.  The plots will
+each consume 1/nth of the vertical space that would have been used
+with one plot.  This works well if the window manager refrains from
+wasting pixels with decorative tabs and respects the hints that xplot provides.
+.TP 5
+.B -mono
+causes the graph(s) to be drawn in black and white, with no use of colors.
+.TP 5
+.B \-1
+allows one to look at multiple data sets, one at a time.
+This changes the behavior of click-right and shift-click-right from
+exiting and printing to cycling forward and backward through the
+various plots.
+.TP 5
+.B \-d display, 
+select the display(s) on which to draw the graphs.
+.TP 5
+.B \-display display,
+same as -d.
+.TP 5
+.B \-d2 display,
+specifies the second display.
+.TP 5
+.B \-geometry WxH[+X+Y]
+allows one to specify the screen geometry. (Understands standard X11 geometry)
+.TP 5
+.B \-thick
+draws the plots with a thick stroke.
+.TP 5
+.B \-version
+prints the version number.
+.TP 5
+.B \-help
+prints a help screen.
+
+.SH MOUSE BINDINGS
+When running 
+.I xplot
+, the mouse may be used as follows:
+.TP 5
+.B left
+Zoom in and out on data. Dragging with the left mouse button depressed while inside the axes of
+the graph draws a rubber-band box around the area to be replotted in
+the existing window.
+
+Dragging with the left mouse button depressed while outside the axes
+(below the X-axis or to the left of the Y-axis) selects the range of
+the axis to plot.  In effect, this is like the previous mechanism, but
+only zooming on one axis.
+
+Clicking the left mouse button zooms out to the previous view.
+One can zoom in multiple times, then back up through each view.
+Panning locations are not saved.
+.TP 5
+.B middle
+Dragging with the middle mouse button inside the axes pans the graph;
+the start-drag position ends up being at the end-drag position.
+Dragging on the axes pans only in one dimension.
+.TP 5
+.B right
+Clicking the right mouse button exits the program.
+.TP 5
+.B SHIFT + left
+Produces a full-page Postscript file with the same axis extents as the current view
+.TP 5
+.B SHIFT + middle
+Produces a Postscript file of a squarish plot with the same axis extents as
+the current view.
+.TP 5
+.B SHIFT + middle
+Produces a Postscript file of a plot such that three of them fit on a page of LaTeX.
+
+.SH PLOT LANGUAGE
+There are several example files 
+.I demo.0
+,
+.I demo.1
+,
+.I demo.2
+etc. stored with the 
+.I xplot
+sources.  
+.I demo.0
+lists all the commands. 'xplot demo.0' demonstrates 
+.I xplot's 
+capabilities.
+
+.SH USE WITH TCPDUMP
+The command
+
+   'tcpdump -tt -S ... > tcpdump.out'
+
+saves a 
+.I tcpdump 
+formatted output trace to
+.I tcpdump.out.
+The '-tt' and '-S' flags tell 
+.I tcpdump
+to print an unformatted timestamp and to use absolute TCP sequence numbers. 
+
+This trace can then be examined by being processed with 
+.I tcpdump2xplot.
+
+   'tcpdump2xplot -plot tcpdump.out'
+
+.SH SEE ALSO
+.TP 8
+.B tcpdump2xplot(1) 
+.SH HISTORY
+.I xplot
+was written by Tim Shepard as a tool to use in his analysis of TCP
+performance while at MIT. Some features were added by Andrew Heybey and Greg
+Troxel.
+
+.SH CREDITS
+Some improved color support and a few other tweaks were contributed
+by Shawn D. Ostermann (ostermann@cs.ohiou.edu).
+
+Manual page updated by Avinash Lakhiani (alahian@tcptrace.org).
+.SH NOTES
+Some people may not like that the right mouse button exits without
+confirmation, although others consider it a feature that enables
+rapidly viewing hundreds of similar plots.
+
+Should use standard X geometry specifications.

@@ -1,0 +1,62 @@
+                           11-April-1995 (and occasionally updated since then)
+
+
+ From: Tim Shepard <shep@lcs.mit.edu>
+ To: All who would like to make TCP plots
+
+My method for making TCP plots is described in my 1990 S.M. thesis
+"TCP Packet Trace Analysis" and the thesis is available in
+postscript form via anonymous FTP from ftp.lcs.mit.edu in the pathname
+
+	/pub/lcs-pubs/tr.outbox/MIT-LCS-TR-494.ps.gz 
+
+or URL:
+
+	ftp://ftp.lcs.mit.edu/pub/lcs-pubs/tr.outbox/MIT-LCS-TR-494.ps.gz
+
+It can also be ordered (in bound soft-cover book form) from
+pubs@lcs.mit.edu as MIT/LCS/TR-494.
+
+To make your own plots, you need three things:
+
+(1) something to collect packet traces with good hi-res timestamps
+
+(2) a program to transform a trace into plotting commands
+
+(3) a plotting program (preferably one which supports zooming in
+    and popping back out)
+
+I cannot give you what I originally used for part (1) because it
+involved a lot of kernel hacking on an old version of BSD unix that
+ran on a vax, but that had Sun's networking code spliced into it.  It
+was very hairy.
+
+Good timestamp resolultion in the traces is important.  Preferably,
+hardware which can provide timestamps with microsecond resolution
+should be used to collect traces.  10ms resolution is not good enough.
+
+Part (2) depends on what you do for part (1) and depends on the
+plotting program.  It can be easily reimplemented by using the
+psuedo code I include with the xplot program (in the file
+README.tcp_plots).
+
+For part (3) you can use my program, or your favorite plotting program.
+The plotting program that I wrote, along with some pseudo-code
+which should help you turn your own packet traces into plots, is
+available via anonymous ftp from mercury.lcs.mit.edu in the pathname
+/pub/shep/xplot.tar.gz or URL:
+
+	ftp://mercury.lcs.mit.edu/pub/shep/xplot.tar.gz
+
+Included are some sample plot files including one tcp plot.
+
+More recently, a perl script (named tcpdump2xplot) has been
+contributed which enables you to make the plots using tcpdump and that
+can take tcpdump output and produce the kinds of plots I made in the
+thesis.  See the README file and the tcpdump2xplot.pl script that come
+with xplot.  If you have tcpdump working on your machine (with good
+timestamps), then this script and xplot should be all you need.
+
+I hope you find all this useful.
+
+		-Tim

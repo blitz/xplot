@@ -1,0 +1,124 @@
+This is the README file for the program xplot.
+
+There seems to be a few other programs floating around the net by the
+same name.  This one was written by Tim Shepard while doing his S.M.
+thesis "TCP Packet Trace Analysis" for David Clark at the MIT
+Laboratory for Computer Science.  The thesis can be ordered from
+MIT/LCS Publications.  Ordering information can be obtained from
++1 617 253 5851 or send mail to publications@lcs.mit.edu.  Ask for
+MIT/LCS/TR-494.  Or you can get it on the net free of charge from
+<ftp://ftp.lcs.mit.edu/pub/lcs-pubs/tr.outbox/MIT-LCS-TR-494.ps.gz>.
+
+To make plots like the ones in my S.M. thesis, you should read the
+ANNOUNCE file, the README.tcp_plots file, and the tcpdump2xplot.pl
+perl script.
+
+Thanks to Garret Wollman for contributing the original
+tcpdump2xplot.pl script and thanks to Eric Prud'hommeaux (@ w3.org)
+for making <http://www.w3.org/pub/WWW/config/tcpdump2xplot.pl>
+available, a much improved version. The one included here is a
+slightly improved version of Eric's.  It tries to do the right thing
+with SYN and FIN bits (by including them in the sequence space) and
+can also handle wscale and SACK options, though you may have to fix
+your version of tcpdump to print out the rfc2018 SACK blocks
+correctly.  (Some versions of tcpdump print out rfc1185 SACK blocks
+which have a different (obsolete) format, but share the same TCP
+option number.)  When you run tcpdump, you'll probably want to include
+the options "-s 96 -S -tt -n".
+
+xplot is compiled by running:
+
+	./configure
+	make
+
+After you get xplot compiled try running:
+
+	xplot demo.*
+
+You will get one window for each input file.  The demo.0 file just
+demonstrates the different things that can be plotted.  The demo.1
+file is from the thesis mentioned above.  Xplot was written to make it
+possible to zoom in on data like this.  To get a feel for zooming, run
+xplot on demo.1 and resize the window so that it fills most of your
+screen.  Then zoom in on the data a few times, and then scroll around.
+The demo.2 file is an ntp wedge plot.  (Ntp wedge plots were invented
+by David Mills when he developed the ntp.)  demo.3 is a simply made
+histogram.  demo.4 is another ntp wedge plot but with some of the data
+points in color.  demo.5 shows how the text commands can be used to
+label things.  demo.6 is a sort of timing diagram.  Most people who
+have made use of xplot write awk or perl scripts to convert their data
+into a form suitable for input into xplot.
+
+There isn't much documentation other than the sourcecode.  To see what
+type of things can be drawn, look in demo.0 .  You can easily add new
+types of points by editing xplot.c.  e.g. adding the "diamond" type
+was accomplished in about 10 minutes by searching for each occurance
+of "box" or "BOX" in xplot.c.
+
+The currently available coordinate types are:
+ double
+ signed
+ unsigned
+ timeval
+
+It should be fairly easy to add a new coordinate type.  Model the
+implementation after an existing coordinate type (like signed.c) and
+make the necessary edits to coord.c and xplot.h.
+
+xplot does not behave well when you wrap around the end of a
+coordinate space.  This is particularly likely if the "unsigned"
+coordinate type is used and you attempt to scroll or zoom to values
+below zero.  Because of this, the "unsigned" coordinate type is not
+recommended.  However, "unsigned" is the only reasonable choice for
+TCP sequence numbers.  A 64-bit signed integer coordinate type should
+be added to xplot someday.  For typical applications, double should be
+used for both coordinate types.
+
+The first line of input names the x and y coordinate types.  After the
+first line, all lines are plot commands.  A line "go" can be included
+to mark the end of the input file, but shouldn't be necessary.
+
+How to drive the mouse
+----------------------
+
+Drag a rectangle with the left mouse button to zoom in.
+Click the left mouse button to pop the zoom stack.
+
+Drag with the middle mouse button to scroll.
+
+Zooming or scrolling below the x axis zooms or scrolls only in the x
+direction.  Similarly, zooming or scrolling to the left of the y axis
+zooms or scrolls only in the y direction.
+
+Click the right mouse button to close the window. Xplot will exit if
+you close all windows.
+
+Clicking the left button while SHIFT is pressed causes xplot to drop a
+postscript file in the current directory.  The title is used as the
+first part of the filename if there has been a title plot command.
+Otherwise, "xplot" is used.  The file ends in PS.# where # is a serial
+number.  Xplot is careful not to write over a previously dumped
+postscript file, and # is incremented until an unused filename is
+found.
+
+Clicking the middle button while SHIFT is pressed similarly causes
+xplot to drop a postscript file, but this will be scaled suitably to
+allow the figure to be included in a document.  You might have to
+fiddle with the constants in emit_PS() and recompile to get the figure
+sized the way you want it.
+
+If you didn't like the size of the figure produced by SHIFT-Middle,
+Clicking the right button while SHIFT is pressed will produce a
+postscript plot just like the middle button, but it will take less
+vertical space.  Again, you can fiddle with the constants in emit_PS()
+and recompile if you don't like these sizes.
+
+X Resources
+-----------
+
+xplot understands the standard geometry, foreground, and background resource
+settings.
+
+---------
+
+Good luck.

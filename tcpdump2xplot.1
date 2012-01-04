@@ -1,0 +1,86 @@
+.Dd 27 January 1999
+.Dt TCPDUMP2XPLOT 1
+.Os
+.Sh NAME
+.Nm tcpdump2xplot
+.Nd converts tcpdump output to xplot input for analysis
+.Sh SYNOPSIS
+.Nm tcpdump2xplot
+.Op Ar -?
+.Op Ar -c
+.Op Ar -help
+.Op Ar -list[filename]
+.Op Ar -plot[filename]
+.Op Ar -q
+.Op Ar -r
+.Op Ar -s
+.Op Ar -t
+.Op Ar -w
+.Sh DESCRIPTION
+.Nm tcpdump2xplot
+takes the output of 
+.Dl tcpdump -tt -S ...
+and plots it in terms of sequence-number versus time, with other info
+displayed (e.g., the TCP window, acks, etc.).
+
+.Sh OPTIONS
+.Ar -?,
+.Ar -help
+prints a help message.
+
+.Ar -c, 
+``cumulative'', adds all the data coming from a server.
+
+.Ar -list[filename] 
+prints the list of generated plot files to filename.
+
+.Ar -plot[filename]
+plots the packets from 
+.Ar filename.
+The filename may be built out of a hostname and port number, e.g.:
+.Pa abc.def.com:1234.  
+The default is 
+.Dl fromhost:fromport-tohost:toport.xplot
+where 
+.Ar fromhost,
+.Ar fromport,
+.Ar thost,
+.Ar toport
+are extracted as conversations from the 
+.Nm tcpdump
+data.
+
+.Ar -q 
+means "quiet" --- no visible output.
+
+.Ar -r 
+means use relative sequence numbers.
+
+.Ar -s 
+means break up conversations on TCP syns.
+
+.Ar -t 
+convert time to decimal number of seconds.
+
+.Ar -w 
+plots the TCP window.
+
+.Sh EXAMPLES 
+.Sh SEE ALSO
+.Xr tcpdump 1 ,
+.Xr xplot 1
+.Sh BUGS
+.Nm tcpdump2xplot
+may not deal properly with output from tcpdump that is not TCP.
+Either filter to only tcp or be careful.
+.Sh HISTORY
+The 
+.Nm tcpdump2xplot
+has been contributed by
+.Nm xplot
+users.
+Thanks to Garret Wollman for contributing the original
+tcpdump2xplot.pl script and thanks to Eric Prud'hommeaux (@ w3.org)
+for making <http://www.w3.org/pub/WWW/config/tcpdump2xplot.pl>
+available, a much improved version.
+The one included here is a slightly improved version of Eric's.

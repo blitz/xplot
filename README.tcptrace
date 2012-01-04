@@ -1,0 +1,11 @@
+This is a modified version of the wonderful xplot program, written by
+Tim Shepard at MIT.
+
+Tim is busy working on other things and hasn't been able to devote
+time to xplot, so the tcptrace project has adopted the program in
+order to keep it useful for tcptrace users by applying bug fixes as
+necessary.  Anything that works correctly and/or looks nice is Tim's
+work.  Most bugs are likely ours!
+
+Shawn
+Fri Feb 16, 2001

@@ -1,0 +1,50 @@
+double double
+title
+demo.0
+xlabel
+label for x axis gjpqy
+ylabel
+label for y axis
+xunits
+cm
+yunits
+in
+invisible -5.0 -5.0
+invisible 10.0 10.0
+x 3.14159265358979323846 2.7182818284590452354
+dot -3 -3
+. -3.5 -3.5
+plus -2 3
++    -2 2
+box 4 2
+diamond 2 4
+utick 3 3.1 
+ltick 3.1 3.1
+dtick 3.1 3
+rtick 3 3
+htick 4 4 
+vtick 4 5
+uarrow 6 6
+darrow 6 7
+larrow 7 6
+rarrow 7 7
+line 0 5 0 8
+line 0 8 3 8
+line 3 8 3 5
+line 3 5 0 5
+dline 1 6 2 7
+ctext 0 0
+(0,0)
+dot 1 0
+rtext 1 0
+<-- (1,0)
+dot -1 0
+ltext -1 0
+(-1,0) -->
+dot 0 1
+atext 0 1
+(0,1)
+dot 0 -1
+btext 0 -1
+(0,-1)
+go

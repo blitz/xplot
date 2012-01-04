@@ -1,0 +1,98 @@
+The following C-like psuedocode should help you make tcp plots like
+those in the MIT/LCS/TR-494.  The code below is simultaneously making
+two different plots, one plot for each direction that data can be
+carried on a tcp connection.  In addition to emulating the pseudo code
+below, you'll have to add some boilerplate to the plotter files.  See
+demo.1 for an example tcp plot.
+
+static  struct last {
+  unsigned long ack;
+  unsigned long windowend;
+  struct timeval time;
+} a, b;
+
+typedef struct {
+  unsigned long  a_address;
+  unsigned long  b_address;
+  unsigned short a_port;
+  unsigned short b_port;
+} tcp_pair;
+
+tcp_pair tp;
+
+PLOTTER topl;
+PLOTTER frompl;
+PLOTTER abpl;
+PLOTTER bapl;
+
+for each tcp packet in order {
+  struct ip_header *iph;
+  struct tcp_header *tcph;
+  tcp_pair ttp;
+  unsigned int tcp_length;
+  unsigned int tcp_data_length;
+  unsigned int start;
+  unsigned int end;
+  struct timeval time;
+    
+  iph = get_pointer_to_ip_header;
+  ttp = iph2ttp(iph);
+
+  /* figure out which direction this packet is going */
+  if (tp.a_address == ttp.a_address && tp.a_port == ttp.a_port) {
+    topl = bapl;
+    frompl = abpl;
+    r = &a;
+  } else {
+    topl = abpl;
+    frompl = bapl;
+    r = &b;
+  }
+    
+  tcph = iph2tcph(iph);
+  
+  time = nh->nh_timestamp;
+    
+  tcp_length = ntohs(iph->total_length) - (4 * iph->ihl);
+  tcp_data_length =
+    tcp_length - (4 * tcph->data_offset) + tcph->syn + tcph->fin;
+  
+  start = ntohl(tcph->sequence_number);
+  end = start + tcp_data_length;
+  
+  /* draw the packet */
+
+  plotter_darrow(frompl, time, start);
+  plotter_uarrow(frompl, time, end);
+  plotter_line(frompl, time, start, time, end);
+    
+  /* draw the ack and win in the other plotter */
+  if (tcph->ack) {
+    unsigned int ack;
+    unsigned int win;
+    unsigned int winend;
+    ack = ntohl(tcph->acknowledgment_number);
+    win = ntohs(tcph->window);
+    winend = ack + win;
+      
+    if (r->time.tv_sec != -1) {
+      plotter_line(topl, r->time, r->ack, time, r->ack);
+      if (r->ack != ack) {
+	plotter_line(topl, time, r->ack, time, ack);
+      } else {
+	plotter_dtick(topl, time, ack);
+      }
+      if (plotwindow) {
+	plotter_line(topl, r->time, r->windowend, time, r->windowend);
+	if (r->windowend != winend) {
+	  plotter_line(topl, time, r->windowend, time, winend);
+	} else {
+	  plotter_utick(topl, time, winend);
+	}
+      }
+    }
+    r->time = time;
+    r->ack = ack;
+    r->windowend = winend;
+  }
+}
