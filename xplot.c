@@ -964,7 +964,7 @@ void display_plotter(PLOTTER pl)
 	    if ( i < 0 )
 	      {
 		fprintf(stderr, "XAllocNamedColor failed for %s: %d\n",
-			ColorNames[i], i);
+			ColorNames[ci], i);
 		break;
 	      }
 
